@@ -1,0 +1,23 @@
+<section class="login-section">
+  <form id="loginForm" onsubmit="return validateForm()" novalidate>
+    <h4>Login</h4>
+
+    <div class="mb-3 mt-3">
+      <label for="exampleInputUsername" class="form-label">Username</label>
+      <input type="text" class="form-control" id="exampleInputUsername" onkeyup="validateUsername()" required>
+      <span id="username-error"></span>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" onkeyup="validatePassword()" required>
+      <span id="password-error"></span>
+    </div>
+
+    <button type="submit">Login</button>
+
+    <p class="text-center mt-3">
+      Don’t have an account? <a href="#register" class="sign_up">Sign up here!</a>
+    </p>
+  </form>
+</section>
