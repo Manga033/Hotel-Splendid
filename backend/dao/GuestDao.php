@@ -59,5 +59,14 @@ class GuestDao extends BaseDao {
     {
          return $this->delete($id);
     }
+
+    public function getGuestByEmail($email) {
+        $sql = "SELECT * FROM guests WHERE email = :email LIMIT 1";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

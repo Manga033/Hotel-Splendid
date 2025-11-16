@@ -45,5 +45,14 @@ class ReviewDao extends BaseDao
     {
         return $this->getAll();
     }
+
+    public function listByRating() {
+        $sql = "SELECT * FROM reviews ORDER BY rating ASC";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

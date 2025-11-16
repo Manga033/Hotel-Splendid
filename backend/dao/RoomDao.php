@@ -48,5 +48,25 @@ class RoomDao extends BaseDao
     {
         return $this->delete($id);
     }
+
+    public function isRoomAvailable($id) {
+        $sql = "SELECT status FROM rooms WHERE id = :id LIMIT 1";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        $room = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $room && $room['status'] === 'available';
+    }
+
+        public function getByStatus($status) {
+        $stmt = $this->connection->prepare("
+            SELECT * FROM rooms
+            WHERE status = :status
+        ");
+        $stmt->bindParam(':status', $status);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

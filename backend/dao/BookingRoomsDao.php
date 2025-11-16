@@ -42,5 +42,17 @@ class BookingRoomsDao extends BaseDao
     {
         return $this->delete($id);
     }
+
+    public function listByNightlyRate() {
+        $sql = "SELECT br.*, r.*
+                FROM booking_rooms br
+                JOIN rooms r ON r.id = br.room_id
+                ORDER BY br.nightly_rate DESC";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
