@@ -53,5 +53,13 @@ class BookingDao extends BaseDao
         return $this->delete($id);
     }
 
+    public function listByCreatedAt() {
+        $sql = "SELECT * FROM bookings ORDER BY created_at DESC";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
