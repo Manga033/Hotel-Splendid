@@ -16,30 +16,38 @@ toastr.options = {
   "hideMethod": "fadeOut"
 };
 
-const usernameError = document.getElementById('username-error');
-const passwordError = document.getElementById('password-error');
-
-function validateUsername() {
-  const username = document.getElementById('exampleInputUsername').value.trim();
+// Define validation functions globally
+window.validateUsername = function() {
+  const usernameInput = document.getElementById('exampleInputUsername');
+  const usernameError = document.getElementById('username-error');
+  
+  if (!usernameInput || !usernameError) return true;
+  
+  const username = usernameInput.value.trim();
   if (username.length === 0) {
     usernameError.innerHTML = 'Username is required.';
     return false;
   }
   usernameError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validatePassword() {
-  const password = document.getElementById('exampleInputPassword1').value;
+window.validatePassword = function() {
+  const passwordInput = document.getElementById('exampleInputPassword1');
+  const passwordError = document.getElementById('password-error');
+  
+  if (!passwordInput || !passwordError) return true;
+  
+  const password = passwordInput.value;
   if (password.length === 0) {
     passwordError.innerHTML = 'Password is required.';
     return false;
   }
   passwordError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validateForm() {
+window.validateForm = function() {
   const userValid = validateUsername();
   const passValid = validatePassword();
 
@@ -48,6 +56,5 @@ function validateForm() {
     return false;
   }
 
-  toastr.success("Login successful!", "Success");
   return true;
-}
+};

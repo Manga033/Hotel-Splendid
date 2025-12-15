@@ -21,7 +21,7 @@ class ReviewService extends BaseService {
             $data['comment'] = null;
         }
 
-        return $this->create($data);
+        return $this->dao->createReview($data);
     }
 
     public function listReviewsByRating() {

@@ -1,68 +1,106 @@
-var nameError = document.getElementById('name-error');
-var lastnameError = document.getElementById('lastname-error');
-var dateError = document.getElementById('date-error');
-var emailError = document.getElementById('email-error');
-var usernameError = document.getElementById('username-error');
-var telnumError = document.getElementById('telnum-error');
-var submitError = document.getElementById('submit-error');
-
-function validateName() {
-  var name = document.getElementById('first_name').value.trim();
-  if (!name) { nameError.innerHTML = 'Name is required.'; return false; }
-  nameError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+// Define all validation functions globally
+window.validateName = function() {
+  const input = document.getElementById('first_name');
+  const error = document.getElementById('name-error');
+  if (!input || !error) return true;
+  
+  var name = input.value.trim();
+  if (!name) {
+    error.innerHTML = 'Name is required.';
+    return false;
+  }
+  error.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validatelastname() {
-  var lastname = document.getElementById('last_name').value.trim();
-  if (!lastname) { lastnameError.innerHTML = 'Last name is required.'; return false; }
-  lastnameError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+window.validatelastname = function() {
+  const input = document.getElementById('last_name');
+  const error = document.getElementById('lastname-error');
+  if (!input || !error) return true;
+  
+  var lastname = input.value.trim();
+  if (!lastname) {
+    error.innerHTML = 'Last name is required.';
+    return false;
+  }
+  error.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validateEmail() {
-  var email = document.getElementById('email').value.trim();
-  if (!email) { emailError.innerHTML = 'Email is required.'; return false; }
+window.validateEmail = function() {
+  const input = document.getElementById('email');
+  const error = document.getElementById('email-error');
+  if (!input || !error) return true;
+  
+  var email = input.value.trim();
+  if (!email) {
+    error.innerHTML = 'Email is required.';
+    return false;
+  }
   if (!email.match(/^[A-Za-z0-9._-]+@[A-Za-z-]+\.[a-z]{2,}$/)) {
-    emailError.innerHTML = 'Invalid Email';
+    error.innerHTML = 'Invalid Email';
     return false;
   }
-  emailError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+  error.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validatePhone() {
-  var phone = document.getElementById('tel_number').value.trim();
-  if (!phone) { telnumError.innerHTML = 'Telephone number is required.'; return false; }
+window.validatePhone = function() {
+  const input = document.getElementById('tel_number');
+  const error = document.getElementById('telnum-error');
+  if (!input || !error) return true;
+  
+  var phone = input.value.trim();
+  if (!phone) {
+    error.innerHTML = 'Telephone number is required.';
+    return false;
+  }
   if (!/^[0-9]{10}$/.test(phone)) {
-    telnumError.innerHTML = 'Telephone number should contain exactly 10 digits.';
+    error.innerHTML = 'Telephone number should contain exactly 10 digits.';
     return false;
   }
-  telnumError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+  error.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validateUsername() {
-  var username = document.getElementById('username_reg').value.trim();
-  if (!username) { usernameError.innerHTML = 'Username is required.'; return false; }
-  usernameError.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+window.validateUsername = function() {
+  const input = document.getElementById('username_reg');
+  const error = document.getElementById('username-error');
+  if (!input || !error) return true;
+  
+  var username = input.value.trim();
+  if (!username) {
+    error.innerHTML = 'Username is required.';
+    return false;
+  }
+  error.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
   return true;
-}
+};
 
-function validateDOB() {
-  var input = document.getElementById('date_of_birth').value;
-  if (!input) { dateError.innerHTML = ''; return true; }
-  var dob = new Date(input);
+window.validateDOB = function() {
+  const input = document.getElementById('date_of_birth');
+  const error = document.getElementById('date-error');
+  if (!input || !error) return true;
+  
+  var val = input.value;
+  if (!val) {
+    error.innerHTML = '';
+    return true;
+  }
+  var dob = new Date(val);
   var today = new Date();
   var age = today.getFullYear() - dob.getFullYear();
   var m = today.getMonth() - dob.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
-  if (age < 18) { dateError.innerHTML = 'You must be at least 18 years old.'; return false; }
-  dateError.innerHTML = '';
+  if (age < 18) {
+    error.innerHTML = 'You must be at least 18 years old.';
+    return false;
+  }
+  error.innerHTML = '';
   return true;
-}
+};
 
-function validateForm() {
+window.validateForm = function() {
   const ok =
     validateName() &
     validatelastname() &
@@ -70,11 +108,15 @@ function validateForm() {
     validatePhone() &
     validateUsername() &
     validateDOB();
+  
+  const submitError = document.getElementById('submit-error');
   if (!ok) {
-    submitError.style.display = 'block';
-    submitError.innerHTML = 'Please fill out the required fields.';
-    setTimeout(() => (submitError.style.display = 'none'), 3000);
+    if (submitError) {
+      submitError.style.display = 'block';
+      submitError.innerHTML = 'Please fill out the required fields.';
+      setTimeout(() => (submitError.style.display = 'none'), 3000);
+    }
     return false;
   }
   return true;
-}
+};

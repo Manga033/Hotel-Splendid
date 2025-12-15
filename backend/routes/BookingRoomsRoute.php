@@ -24,6 +24,9 @@ use OpenApi\Annotations as OA;
  */
 
 Flight::route('GET /booking-rooms', function(){
+
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     $order = Flight::request()->query['order'] ?? null;
 
     if($order === 'nightly_rate') {
@@ -53,6 +56,8 @@ Flight::route('GET /booking-rooms', function(){
  */
 
 Flight::route('GET /booking-rooms/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
     Flight::json(Flight::bookingRoomsService()->getById($id));
 });
 
@@ -78,6 +83,8 @@ Flight::route('GET /booking-rooms/@id', function($id){
  */
 
 Flight::route('POST /booking-rooms', function(){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::bookingRoomsService()->addRoomToBooking($data));
 });
@@ -111,6 +118,8 @@ Flight::route('POST /booking-rooms', function(){
  */
 
 Flight::route('PUT /booking-rooms/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::bookingRoomsService()->update($id, $data));
 });
@@ -143,6 +152,8 @@ Flight::route('PUT /booking-rooms/@id', function($id){
  */
 
 Flight::route('PATCH /booking-rooms/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::bookingRoomsService()->update($id, $data));
 });
@@ -167,6 +178,8 @@ Flight::route('PATCH /booking-rooms/@id', function($id){
  */
 
 Flight::route('DELETE /booking-rooms/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::bookingRoomsService()->delete($id));
 });
 ?>

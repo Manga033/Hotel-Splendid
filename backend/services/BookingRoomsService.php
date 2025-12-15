@@ -21,7 +21,7 @@ class BookingRoomsService extends BaseService {
             throw new Exception("Nightly rate must be a non-negative number.");
         }
 
-        return $this->create($data);
+        return $this->dao->createBookingRooms($data);
     }
 
     public function listBookingRoomsByNightlyRate() {

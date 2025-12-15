@@ -22,6 +22,8 @@ use OpenApi\Annotations as OA;
  */
 
 Flight::route('GET /guest', function(){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $email = Flight::request()->query['email'] ?? null;
 
     if($email) {
@@ -51,6 +53,7 @@ Flight::route('GET /guest', function(){
  */
 
 Flight::route('GET /guest/@id', function($id){
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
     Flight::json(Flight::guestService()->getById($id));
 });
 
@@ -84,6 +87,8 @@ Flight::route('GET /guest/@id', function($id){
  */
 
 Flight::route('POST /guest', function() {
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::guestService()->registerGuest($data));
 });
@@ -126,6 +131,8 @@ Flight::route('POST /guest', function() {
  */
 
 Flight::route('PUT /guest/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::guestService()->update($id, $data));
 });
@@ -166,6 +173,8 @@ Flight::route('PUT /guest/@id', function($id){
  */
 
 Flight::route('PATCH /guest/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::guestService()->update($id, $data));
 });
@@ -190,6 +199,8 @@ Flight::route('PATCH /guest/@id', function($id){
  */
 
 Flight::route('DELETE /guest/@id', function($id){
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::guestService()->delete($id));
 });
 ?>

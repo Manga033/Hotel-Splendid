@@ -1,31 +1,31 @@
 <?php
-class Database {
-   private static $host = 'localhost';
-   private static $port = 3306;  
-   private static $dbName = 'hotel_splendid_db';
-   private static $username = 'root';
-   private static $password = '';
-   private static $connection = null;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED));
 
-   public static function connect() {
-       if (self::$connection === null) {
-           try {
-               self::$connection = new PDO(
-                   "mysql:host=" . self::$host . ";dbname=" . self::$dbName,
-                   self::$username,
-                   self::$password,
-                   [
-                       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                   ]
-               );
-           } catch (PDOException $e) {
-               die("Connection failed: " . $e->getMessage());
-           }
-       }
-       return self::$connection;
-   }
-   }
-?>
+class Config {
+    public static function DB_NAME() {
+        return 'hotel_splendid_db';
+    }
 
+    public static function DB_PORT() {
+        return '3306';
+    }
+
+    public static function DB_USER() {
+        return 'root';
+    }
+
+    public static function DB_PASSWORD() {
+        return '';
+    }
+
+    public static function DB_HOST() {
+        return '127.0.0.1';
+    }
+
+    public static function JWT_SECRET() {
+        return 'MY_SIMPLE_SECRET';
+    }
+}   

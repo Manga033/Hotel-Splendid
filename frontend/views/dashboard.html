@@ -1,0 +1,169 @@
+<div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+  <h2 class="page-header">My Dashboard</h2>
+  <hr/>
+  
+  <div style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">Welcome, <span id="user-name"></span>!</h3>
+    <p style="font-size: 18px; color: #3b331a;">View and manage your bookings below.</p>
+  </div>
+
+  <div style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">My Bookings</h3>
+    
+    <button type="button" class="btn btn-fill btn-large" style="margin-bottom: 1rem;" onclick="DashboardService.openCreateBookingModal()">
+      Create New Booking
+    </button>
+
+    <table id="my-bookings-table" class="table" style="width:100%;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Check In</th>
+          <th>Check Out</th>
+          <th>Guests</th>
+          <th>Status</th>
+          <th>Total Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="bookings-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal" id="createBookingModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+  <div class="modal-dialog" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 500px; border-radius: 8px;">
+    <div class="modal-content">
+      <form id="createBookingForm">
+        <div class="modal-header" style="margin-bottom: 1rem;">
+          <h4 class="modal-title" style="color: #241e09;">Create New Booking</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="guest_id" name="guest_id">
+          
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="check_in_date">Check In Date:</label>
+            <input type="date" class="form-control" id="check_in_date" name="check_in_date" required>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="check_out_date">Check Out Date:</label>
+            <input type="date" class="form-control" id="check_out_date" name="check_out_date" required>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="num_of_guests">Number of Guests:</label>
+            <input type="number" class="form-control" id="num_of_guests" name="num_of_guests" min="1" value="1" required>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="num_of_children">Number of Children:</label>
+            <input type="number" class="form-control" id="num_of_children" name="num_of_children" min="0" value="0">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="booking_type">Booking Type:</label>
+            <select class="form-control" id="booking_type" name="type" required>
+              <option value="standard">Standard</option>
+              <option value="nonrefundable">Non-Refundable</option>
+              <option value="corporate">Corporate</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer" style="margin-top: 1rem;">
+          <button type="button" class="btn btn-ghost" onclick="DashboardService.closeModal()">Close</button>
+          <button type="submit" class="btn btn-fill">Create Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+let DashboardService = {
+  init: function() {
+    const user = Utils.getUserFromToken();
+    if (!user) {
+      toastr.error("Please login first");
+      window.location.replace("#login");
+      return;
+    }
+    
+    $('#user-name').text(user.username);
+    $('#guest_id').val(user.id);
+    
+    this.loadMyBookings();
+    
+    $("#createBookingForm").validate({
+      submitHandler: function(form) {
+        const data = Object.fromEntries(new FormData(form).entries());
+        DashboardService.createBooking(data);
+      }
+    });
+  },
+  
+  loadMyBookings: function() {
+    const user = Utils.getUserFromToken();
+    
+    BookingService.getAllBookings(function(data) {
+      const myBookings = data.filter(b => b.guest_id == user.id);
+      const tbody = $('#bookings-tbody');
+      tbody.empty();
+      
+      if (myBookings.length === 0) {
+        tbody.append('<tr><td colspan="7" style="text-align: center;">No bookings found</td></tr>');
+        return;
+      }
+      
+      myBookings.forEach(booking => {
+        tbody.append(`
+          <tr>
+            <td>${booking.id}</td>
+            <td>${booking.check_in_date}</td>
+            <td>${booking.check_out_date}</td>
+            <td>${booking.num_of_guests}</td>
+            <td><span style="padding: 4px 8px; border-radius: 4px; background: ${booking.status === 'confirmed' ? '#d4af37' : '#ccc'}; color: white;">${booking.status}</span></td>
+            <td>$${booking.total_price}</td>
+            <td>
+              <button class="btn btn-ghost" style="margin-right: 5px; font-size: 12px; padding: 5px 10px;" onclick="DashboardService.viewBooking(${booking.id})">View</button>
+              ${booking.status === 'pending' ? `<button class="btn btn-ghost" style="font-size: 12px; padding: 5px 10px;" onclick="DashboardService.cancelBooking(${booking.id})">Cancel</button>` : ''}
+            </td>
+          </tr>
+        `);
+      });
+    });
+  },
+  
+  openCreateBookingModal: function() {
+    $('#createBookingModal').show();
+  },
+  
+  closeModal: function() {
+    $('#createBookingModal').hide();
+    $('#createBookingForm')[0].reset();
+  },
+  
+  createBooking: function(data) {
+    BookingService.createBooking(data, function(response) {
+      DashboardService.closeModal();
+      DashboardService.loadMyBookings();
+    });
+  },
+  
+  viewBooking: function(id) {
+    BookingService.getBookingById(id, function(data) {
+      toastr.info(`Booking #${data.id}: ${data.check_in_date} to ${data.check_out_date}`);
+    });
+  },
+  
+  cancelBooking: function(id) {
+    if (confirm('Are you sure you want to cancel this booking?')) {
+      BookingService.patchBooking(id, { status: 'cancelled' }, function() {
+        DashboardService.loadMyBookings();
+      });
+    }
+  }
+};
+
+DashboardService.init();
+</script>
