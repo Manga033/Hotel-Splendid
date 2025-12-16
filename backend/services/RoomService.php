@@ -47,7 +47,7 @@ class RoomService extends BaseService {
                 throw new Exception("Invalid room status: " . $data['status']);
             }
         }
-        return $this->create($data);
+        return $this->dao->createRoom($data);
     }
 }
 ?>

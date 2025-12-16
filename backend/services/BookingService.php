@@ -17,7 +17,7 @@ class BookingService extends BaseService {
         throw new Exception("Check-out date must be later than Check-in date.");
     }
 
-        return $this->create($data);
+        return $this->dao->createBooking($data);
     }
 
 public function listBookingsByCreatedAt() {

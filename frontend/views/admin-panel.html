@@ -1,0 +1,346 @@
+<div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+  <h2 class="page-header">Admin Panel</h2>
+  <hr/>
+  
+  <div style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">Welcome, Admin!</h3>
+    <p style="font-size: 18px; color: #3b331a;">Manage all hotel operations from this panel.</p>
+  </div>
+
+  <div style="margin-bottom: 2rem;">
+    <button class="btn btn-fill" style="margin-right: 10px;" onclick="AdminService.showTab('guests')">Guests</button>
+    <button class="btn btn-fill" style="margin-right: 10px;" onclick="AdminService.showTab('bookings')">Bookings</button>
+    <button class="btn btn-fill" style="margin-right: 10px;" onclick="AdminService.showTab('rooms')">Rooms</button>
+    <button class="btn btn-fill" onclick="AdminService.showTab('reviews')">Reviews</button>
+  </div>
+
+  <div id="guests-tab" class="admin-tab" style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">Manage Guests</h3>
+    <button type="button" class="btn btn-fill btn-large" style="margin-bottom: 1rem;" onclick="AdminService.openCreateGuestModal()">
+      Add New Guest
+    </button>
+    <table id="guests-table" class="table" style="width:100%;">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="guests-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="bookings-tab" class="admin-tab" style="display: none; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">Manage Bookings</h3>
+    <table id="admin-bookings-table" class="table" style="width:100%;">
+      <thead>
+        <tr><th>ID</th><th>Guest ID</th><th>Check In</th><th>Check Out</th><th>Status</th><th>Total</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="admin-bookings-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="rooms-tab" class="admin-tab" style="display: none; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">Manage Rooms</h3>
+    <button type="button" class="btn btn-fill btn-large" style="margin-bottom: 1rem;" onclick="AdminService.openCreateRoomModal()">
+      Add New Room
+    </button>
+    <table id="rooms-table" class="table" style="width:100%;">
+      <thead>
+        <tr><th>ID</th><th>Room Number</th><th>Type</th><th>Price</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="rooms-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="reviews-tab" class="admin-tab" style="display: none; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="margin-bottom: 1.5rem; color: #241e09;">Manage Reviews</h3>
+    <table id="reviews-table" class="table" style="width:100%;">
+      <thead>
+        <tr><th>ID</th><th>Guest ID</th><th>Rating</th><th>Title</th><th>Comment</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="reviews-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal" id="createGuestModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+  <div class="modal-dialog" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 500px; border-radius: 8px; max-height: 80vh; overflow-y: auto;">
+    <form id="createGuestForm">
+      <h4 style="margin-bottom: 1rem;">Add New Guest</h4>
+      <div style="margin-bottom: 1rem;">
+        <label>First Name:</label>
+        <input type="text" class="form-control" name="first_name" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Last Name:</label>
+        <input type="text" class="form-control" name="last_name" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Email:</label>
+        <input type="email" class="form-control" name="email" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Username:</label>
+        <input type="text" class="form-control" name="username" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Password:</label>
+        <input type="password" class="form-control" name="password" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Phone:</label>
+        <input type="tel" class="form-control" name="tel_num">
+      </div>
+      <button type="button" class="btn btn-ghost" onclick="AdminService.closeModal('createGuestModal')">Close</button>
+      <button type="submit" class="btn btn-fill">Create</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="createRoomModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+  <div class="modal-dialog" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 500px; border-radius: 8px;">
+    <form id="createRoomForm">
+      <h4 style="margin-bottom: 1rem;">Add New Room</h4>
+      <div style="margin-bottom: 1rem;">
+        <label>Room Number:</label>
+        <input type="text" class="form-control" name="room_number" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Floor:</label>
+        <input type="number" class="form-control" name="floor" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Type:</label>
+        <select class="form-control" name="type" required>
+          <option value="single">Single</option>
+          <option value="double">Double</option>
+          <option value="suite">Suite</option>
+          <option value="deluxe">Deluxe</option>
+          <option value="family">Family</option>
+        </select>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Base Price:</label>
+        <input type="number" class="form-control" name="base_price" step="0.01" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Description:</label>
+        <textarea class="form-control" name="description" rows="3"></textarea>
+      </div>
+      <button type="button" class="btn btn-ghost" onclick="AdminService.closeModal('createRoomModal')">Close</button>
+      <button type="submit" class="btn btn-fill">Create</button>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+// Wait for jQuery to be available
+(function initAdminPanel() {
+  if (typeof $ === 'undefined' || typeof jQuery === 'undefined') {
+    setTimeout(initAdminPanel, 100);
+    return;
+  }
+
+  window.AdminService = {
+    init: function() {
+      const user = Utils.getUserFromToken();
+      if (!user || user.role !== Constants.ADMIN_ROLE) {
+        toastr.error("Access denied. Admins only.");
+        window.location.replace("#home");
+        return;
+      }
+      
+      this.loadGuests();
+      
+      $("#createGuestForm").validate({
+        submitHandler: function(form) {
+          const data = Object.fromEntries(new FormData(form).entries());
+          GuestService.createGuest(data, function() {
+            AdminService.closeModal('createGuestModal');
+            AdminService.loadGuests();
+          });
+        }
+      });
+      
+      $("#createRoomForm").validate({
+        submitHandler: function(form) {
+          const data = Object.fromEntries(new FormData(form).entries());
+          RoomService.createRoom(data, function() {
+            AdminService.closeModal('createRoomModal');
+            AdminService.loadRooms();
+          });
+        }
+      });
+    },
+    
+    showTab: function(tab) {
+      $('.admin-tab').hide();
+      $('#' + tab + '-tab').show();
+      
+      if (tab === 'guests') this.loadGuests();
+      if (tab === 'bookings') this.loadBookings();
+      if (tab === 'rooms') this.loadRooms();
+      if (tab === 'reviews') this.loadReviews();
+    },
+    
+    loadGuests: function() {
+      GuestService.getAllGuests(function(data) {
+        // Ensure data is an array
+        const guests = Array.isArray(data) ? data : [];
+        const tbody = $('#guests-tbody');
+        tbody.empty();
+        
+        if (guests.length === 0) {
+          tbody.append('<tr><td colspan="5" style="text-align: center;">No guests found</td></tr>');
+          return;
+        }
+        
+        guests.forEach(function(guest) {
+          tbody.append(
+            '<tr>' +
+              '<td>' + guest.id + '</td>' +
+              '<td>' + guest.first_name + ' ' + guest.last_name + '</td>' +
+              '<td>' + guest.email + '</td>' +
+              '<td>' + (guest.tel_num || 'N/A') + '</td>' +
+              '<td>' +
+                '<button class="btn btn-ghost" style="font-size: 12px; padding: 5px 10px;" onclick="AdminService.deleteGuest(' + guest.id + ')">Delete</button>' +
+              '</td>' +
+            '</tr>'
+          );
+        });
+      });
+    },
+    
+    loadBookings: function() {
+      BookingService.getAllBookings(function(data) {
+        const bookings = Array.isArray(data) ? data : [];
+        const tbody = $('#admin-bookings-tbody');
+        tbody.empty();
+        
+        if (bookings.length === 0) {
+          tbody.append('<tr><td colspan="7" style="text-align: center;">No bookings found</td></tr>');
+          return;
+        }
+        
+        bookings.forEach(function(booking) {
+          tbody.append(
+            '<tr>' +
+              '<td>' + booking.id + '</td>' +
+              '<td>' + booking.guest_id + '</td>' +
+              '<td>' + booking.check_in_date + '</td>' +
+              '<td>' + booking.check_out_date + '</td>' +
+              '<td>' + booking.status + '</td>' +
+              '<td>$' + booking.total_price + '</td>' +
+              '<td>' +
+                '<button class="btn btn-ghost" style="font-size: 12px; padding: 5px 10px;" onclick="AdminService.deleteBooking(' + booking.id + ')">Delete</button>' +
+              '</td>' +
+            '</tr>'
+          );
+        });
+      });
+    },
+    
+    loadRooms: function() {
+      RoomService.getAllRooms(function(data) {
+        const rooms = Array.isArray(data) ? data : [];
+        const tbody = $('#rooms-tbody');
+        tbody.empty();
+        
+        if (rooms.length === 0) {
+          tbody.append('<tr><td colspan="6" style="text-align: center;">No rooms found</td></tr>');
+          return;
+        }
+        
+        rooms.forEach(function(room) {
+          tbody.append(
+            '<tr>' +
+              '<td>' + room.id + '</td>' +
+              '<td>' + room.room_number + '</td>' +
+              '<td>' + room.type + '</td>' +
+              '<td>$' + room.base_price + '</td>' +
+              '<td>' + room.status + '</td>' +
+              '<td>' +
+                '<button class="btn btn-ghost" style="font-size: 12px; padding: 5px 10px;" onclick="AdminService.deleteRoom(' + room.id + ')">Delete</button>' +
+              '</td>' +
+            '</tr>'
+          );
+        });
+      });
+    },
+    
+    loadReviews: function() {
+      ReviewService.getAllReviews(function(data) {
+        const reviews = Array.isArray(data) ? data : [];
+        const tbody = $('#reviews-tbody');
+        tbody.empty();
+        
+        if (reviews.length === 0) {
+          tbody.append('<tr><td colspan="6" style="text-align: center;">No reviews found</td></tr>');
+          return;
+        }
+        
+        reviews.forEach(function(review) {
+          const comment = review.comment ? review.comment.substring(0, 50) : 'N/A';
+          tbody.append(
+            '<tr>' +
+              '<td>' + review.id + '</td>' +
+              '<td>' + review.guest_id + '</td>' +
+              '<td>' + review.rating + '/5</td>' +
+              '<td>' + review.title + '</td>' +
+              '<td>' + comment + '</td>' +
+              '<td>' +
+                '<button class="btn btn-ghost" style="font-size: 12px; padding: 5px 10px;" onclick="AdminService.deleteReview(' + review.id + ')">Delete</button>' +
+              '</td>' +
+            '</tr>'
+          );
+        });
+      });
+    },
+    
+    openCreateGuestModal: function() {
+      $('#createGuestModal').show();
+    },
+    
+    openCreateRoomModal: function() {
+      $('#createRoomModal').show();
+    },
+    
+    closeModal: function(modalId) {
+      $('#' + modalId).hide();
+      $('#' + modalId + ' form')[0].reset();
+    },
+    
+    deleteGuest: function(id) {
+      if (confirm('Delete this guest?')) {
+        GuestService.deleteGuest(id, function() {
+          AdminService.loadGuests();
+        });
+      }
+    },
+    
+    deleteBooking: function(id) {
+      if (confirm('Delete this booking?')) {
+        BookingService.deleteBooking(id, function() {
+          AdminService.loadBookings();
+        });
+      }
+    },
+    
+    deleteRoom: function(id) {
+      if (confirm('Delete this room?')) {
+        RoomService.deleteRoom(id, function() {
+          AdminService.loadRooms();
+        });
+      }
+    },
+    
+    deleteReview: function(id) {
+      if (confirm('Delete this review?')) {
+        ReviewService.deleteReview(id, function() {
+          AdminService.loadReviews();
+        });
+      }
+    }
+  };
+
+  AdminService.init();
+})();
+</script>

@@ -1,147 +1,196 @@
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 	<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Hotel Splendid Helps you Discover The Perfect Balance
-		Of Hospitality, Luxury And
-		Comfort.">
-		<title>Hotel Splendid</title>
-		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="frontend/assets/css/global-header.css">
-		<link rel="stylesheet" href="frontend/assets/css/global-footer.css">
-		<link rel="stylesheet" href="frontend/assets/css/accesibility.css">
-		<link rel="stylesheet" href="frontend/assets/css/index.css">
-		<link rel="stylesheet" href="frontend/assets/css/rooms-and-suites.css">
-  		<link rel="stylesheet" href="frontend/assets/css/facilities.css">
-  		<link rel="stylesheet" href="frontend/assets/css/contact-page.css">
-		<link rel="stylesheet" href="frontend/assets/css/login.css">
-		<link rel="stylesheet" href="frontend/assets/css/registration.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-		<link rel="stylesheet" href="frontend/assets/css/spapp.css">
-		<link rel="shortcut icon" href="frontend/assets/img/splendid.png" type="image/x-icon">
-	</head>
-	<body class="scroll-bar">
-		<div id="loader">
-			<svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-			viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-				<path fill="#d4af37" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-					<animateTransform 
-						attributeName="transform" 
-						attributeType="XML" 
-						type="rotate"
-						dur="1s" 
-						from="0 50 50"
-						to="360 50 50" 
-						repeatCount="indefinite" />
-			</path>
-			</svg>
-		</div>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Hotel Splendid Helps you Discover The Perfect Balance Of Hospitality, Luxury And Comfort.">
+	<title>Hotel Splendid</title>
+	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="frontend/assets/css/global-header.css">
+	<link rel="stylesheet" href="frontend/assets/css/global-footer.css">
+	<link rel="stylesheet" href="frontend/assets/css/accesibility.css">
+	<link rel="stylesheet" href="frontend/assets/css/index.css">
+	<link rel="stylesheet" href="frontend/assets/css/rooms-and-suites.css">
+	<link rel="stylesheet" href="frontend/assets/css/facilities.css">
+	<link rel="stylesheet" href="frontend/assets/css/contact-page.css">
+	<link rel="stylesheet" href="frontend/assets/css/login.css">
+	<link rel="stylesheet" href="frontend/assets/css/registration.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<link rel="stylesheet" href="frontend/assets/css/spapp.css">
+	<link rel="shortcut icon" href="frontend/assets/img/splendid.png" type="image/x-icon">
+</head>
+<body class="scroll-bar">
+	<div id="loader">
+		<svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+		viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+			<path fill="#d4af37" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+				<animateTransform 
+					attributeName="transform" 
+					attributeType="XML" 
+					type="rotate"
+					dur="1s" 
+					from="0 50 50"
+					to="360 50 50" 
+					repeatCount="indefinite" />
+		</path>
+		</svg>
+	</div>
+
 	<header>
 		<div class="header-container">
 			<nav class="header-nav-bar">
-					<div class="header-nav-logo">
-						<a href="#home">
-							<img src="frontend/assets/img/splendid.png"
-								alt="Hotel Splendid logo">
-						</a>
-					</div>
-					<ul class="header-nav-lists">
-							<li class="header-nav-list">
-								<a class="header-nav-link header-active" href="#home">Home</a>
-							</li>
-							<li class="header-nav-list"><a class="header-nav-link"
-									href="#rooms">Rooms and Suites</a></li>
-							<li class="header-nav-list"><a class="header-nav-link" href="#facilities">Facilities</a></li>
-							<li class="header-nav-list"><a class="header-nav-link" href="#contact">Contact Us</a></li>
-							<li class="header-nav-list"><a class="header-nav-link" href="#login">Register/Login</a></li>
-							<li class="header-nav-list"><a class="header-btn header-btn-custom" href="https://timbu.com/search?query=hotel">BOOK NOW</a></li>
-						</ul>
-				
+				<div class="header-nav-logo">
+					<a href="#home">
+						<img src="frontend/assets/img/splendid.png" alt="Hotel Splendid logo">
+					</a>
+				</div>
+				<ul class="header-nav-lists">
+					<li class="header-nav-list">
+						<a class="header-nav-link header-active" href="#home">Home</a>
+					</li>
+					<li class="header-nav-list">
+						<a class="header-nav-link" href="#rooms">Rooms and Suites</a>
+					</li>
+					<li class="header-nav-list">
+						<a class="header-nav-link" href="#facilities">Facilities</a>
+					</li>
+					<li class="header-nav-list">
+						<a class="header-nav-link" href="#contact">Contact Us</a>
+					</li>
+					<li class="header-nav-list">
+						<a class="header-nav-link" href="#login">Register/Login</a>
+					</li>
+					<li class="header-nav-list">
+						<a class="header-btn header-btn-custom" href="https://timbu.com/search?query=hotel">BOOK NOW</a>
+					</li>
+				</ul>
+			
 				<div class="header-hamburger-icon">
-				<div class="header-hamburger-line-1"></div>
-				<div class="header-hamburger-line-2"></div>
-				<div class="header-hamburger-line-3"></div>
+					<div class="header-hamburger-line-1"></div>
+					<div class="header-hamburger-line-2"></div>
+					<div class="header-hamburger-line-3"></div>
 				</div>
 			</nav>
 		</div>
-		</header>
+	</header>
 
-		<section id="pageContent">
-			<main id="spapp" role="main">
-				<section id="home" data-load="home.html"></section>
-				<section id="rooms" data-load="rooms-and-suites.html"></section>
-				<section id="facilities" data-load="facilities.html"></section>
-				<section id="contact" data-load="contact-page.html"></section>
-				<section id="login" data-load="login.html"></section>
-				<section id="register" data-load="registration.html"></section>
-			</main>
-		</section>
+	<section id="pageContent">
+		<main id="spapp" role="main">
+			<section id="home" data-load="home.html"></section>
+			<section id="rooms" data-load="rooms-and-suites.html"></section>
+			<section id="facilities" data-load="facilities.html"></section>
+			<section id="contact" data-load="contact-page.html"></section>
+			<section id="login" data-load="login.html"></section>
+			<section id="register" data-load="registration.html"></section>
+			<section id="dashboard" data-load="dashboard.html"></section>
+			<section id="admin-panel" data-load="admin-panel.html"></section>
+		</main>
+	</section>
 
+	<footer class="footer">
+		<div class="footer-container">
+			<nav class="footer-nav">
+				<div class="footer-description">
+					<h3 class="footer-description-title">Hotel Splendid</h3>
+					<p>Hospitality and Comfort are our watchwords</p>
+				</div>
+				<div class="footer-contact-us">
+					<h3 class="footer-description-title">Contact Us</h3>
+					<p class="footer-description-detail"> 
+						<img src="frontend/assets/img/map-pin.svg" class="footer-description-icon" alt="Hotel Splendid location">
+						<span>Bosnia and Herzegovina, Sarajevo, 71000</span>
+					</p>
+					<p class="footer-description-detail">
+						<img src="frontend/assets/img/phone.svg" class="footer-description-icon" alt="Hotel Splendid phone number"> 
+						<span>+38761123456</span>
+					</p>
+					<p class="footer-description-detail">
+						<img src="frontend/assets/img/mail.svg" class="footer-description-icon" alt="Hotel Splendid email">
+						<span>support@hotel-splendid.com</span>
+					</p>
+				</div>
+				<div class="footer-follow-us">
+					<h3 class="footer-description-title">Follow Us</h3>
+					<ul class="footer-follow-us-lists">
+						<li class="follow-us-list">
+							<a href="https://www.facebook.com/">
+								<img src="frontend/assets/img/facebook.svg" alt="Hotel Splendid facebook page">
+							</a>
+						</li>
+						<li class="follow-us-list">
+							<a href="https://x.com/">
+								<img src="frontend/assets/img/twitter.svg" alt="Hotel Splendid twitter page">
+							</a>
+						</li>
+						<li class="follow-us-list">
+							<a href="https://www.instagram.com/">
+								<img src="frontend/assets/img/instagram.svg" alt="Hotel Splendid instagram page">
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</footer>
 
-		<footer class="footer">
-			<div class="footer-container">
-				<nav class="footer-nav">
-					<div class="footer-description">
-						<h3 class="footer-description-title">Hotel Splendid</h3>
-						<p>Hospitality and Comfort are our watchwords</p>
-					</div>
-					<div class="footer-contact-us">
-						<h3 class="footer-description-title">Contact Us</h3>
-						<p class="footer-description-detail"> 
-							<img src="frontend/assets/img/map-pin.svg" class="footer-description-icon" alt="Hotel Splendid location">
+	<script defer async>
+		(() => {
+			const loader = document.getElementById('loader');
+			const scrollBar = document.getElementsByClassName('scroll-bar')[0];
+			window.addEventListener('load', () => {
+				loader.classList.add('none');
+				scrollBar.classList.remove('scroll-bar')
+			});
+		})();
+	</script>
 
-							<span>Bosnia and Herzegovina, Sarajevo, 71000</span></p>
-						<p class="footer-description-detail">
-							<img src="frontend/assets/img/phone.svg" class="footer-description-icon" alt="Hotel Splendid phone number"> 
-							<span>
-						+38761123456</span></p>
-						<p class="footer-description-detail">
-							<img src="frontend/assets/img/mail.svg" class="footer-description-icon" alt="Hotel Splendid email">
-							<span>support@hotel-splendid.com</span> </p>
-					</div>
-					<div class="footer-follow-us">
-						<h3 class="footer-description-title">Follow Us</h3>
-						<ul class="footer-follow-us-lists">
-							<li class="follow-us-list">
-								<a href="https://www.facebook.com/">
-									<img src="frontend/assets/img/facebook.svg" alt="Hotel Splendid facebook page">
-								</a>
-							</li>
-							<li class="follow-us-list">
-								<a href="https://x.com/">
-									<img src="frontend/assets/img/twitter.svg" alt="Hotel Splendid twitter page">
-								</a>
-							</li>
-							<li class="follow-us-list">
-								<a href="https://www.instagram.com/">
-									<img src="frontend/assets/img/instagram.svg" alt="Hotel Splendid instagram page">
-								</a>
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</div>
-		</footer>
-		<script defer async>
-			(() => {
-				const loader = document.getElementById('loader');
-				const scrollBar = document.getElementsByClassName('scroll-bar')[0];
-				window.addEventListener('load', () => {
-					loader.classList.add('none');
-					scrollBar.classList.remove('scroll-bar')
-				});
-			})();
-		</script>
-		<script src="frontend/assets/js/jquery.min.js"></script>
-		<script src="frontend/assets/js/jquery.spapp.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-		<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-		<script src="frontend/assets/js/loginval.js"></script>
-		<script src="frontend/assets/js/validation.js"></script>
-		<script src="frontend/assets/js/password.js"></script>
-		<script src="frontend/assets/js/script.js"></script>
-		<script src="frontend/assets/js/toggleHamburger.js"></script>
-		<script src="frontend/assets/js/switchRooms.js"></script>
-	</body>
-	</html>
+	<script src="frontend/assets/js/jquery.min.js"></script>
+	<script src="frontend/assets/js/jquery.spapp.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+	<script src="frontend/utils/constants.js"></script>
+	<script src="frontend/utils/rest-client.js"></script>
+	<script src="frontend/utils/utils.js"></script>
+
+	<script src="frontend/services/user-service.js"></script>
+	<script src="frontend/services/guest-service.js"></script>
+	<script src="frontend/services/booking-service.js"></script>
+	<script src="frontend/services/room-service.js"></script>
+	<script src="frontend/services/review-service.js"></script>
+
+	<script src="frontend/assets/js/loginval.js"></script>
+	<script src="frontend/assets/js/validation.js"></script>
+	<script src="frontend/assets/js/password.js"></script>
+
+	<script src="frontend/assets/js/script.js"></script>
+	<script src="frontend/assets/js/toggleHamburger.js"></script>
+	<script src="frontend/assets/js/switchRooms.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			UserService.generateMenuItems();
+
+			$(window).on('hashchange', function() {
+				const hash = location.hash;
+				const user = Utils.getUserFromToken();
+
+				if ((hash === '#dashboard' || hash === '#admin-panel') && !user) {
+					toastr.warning('Please login to access this page');
+					window.location.replace('#login');
+					return;
+				}
+
+				if (hash === '#admin-panel' && user && user.role !== Constants.ADMIN_ROLE) {
+					toastr.error('Access denied. Admins only.');
+					window.location.replace('#home');
+					return;
+				}
+
+				UserService.generateMenuItems();
+			});
+		});
+	</script>
+</body>
+</html>
