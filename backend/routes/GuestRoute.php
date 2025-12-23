@@ -7,6 +7,7 @@ use OpenApi\Annotations as OA;
  *   path="/guest",
  *   tags={"guests"},
  *   summary="Get all guests or get guest by email",
+ *   security={{"ApiKey": {}}},
  *  @OA\Parameter(
  *     name="email",
  *     in="query",
@@ -38,6 +39,7 @@ Flight::route('GET /guest', function(){
  *     path="/guest/{id}",
  *     tags={"guests"},
  *     summary="Get a single guest by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -62,6 +64,7 @@ Flight::route('GET /guest/@id', function($id){
  *     path="/guest",
  *     tags={"guests"},
  *     summary="Register a new guest",
+ *     security={{"ApiKey": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -142,6 +145,7 @@ Flight::route('PUT /guest/@id', function($id){
  *     path="/guest/{id}",
  *     tags={"guests"},
  *     summary="Partially update a guest by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -184,6 +188,7 @@ Flight::route('PATCH /guest/@id', function($id){
  *     path="/guest/{id}",
  *     tags={"guests"},
  *     summary="Delete a guest by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

@@ -50,4 +50,3 @@ class RoomService extends BaseService {
         return $this->dao->createRoom($data);
     }
 }
-?>

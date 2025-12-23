@@ -23,5 +23,8 @@ class BookingService extends BaseService {
 public function listBookingsByCreatedAt() {
         return $this->dao->listByCreatedAt();
     }
+
+    public function getBookingsByGuestId($guest_id) {
+    return $this->dao->getBookingsByGuestId($guest_id);
 }
-?>
+}

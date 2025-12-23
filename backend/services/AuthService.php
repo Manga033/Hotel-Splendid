@@ -1,4 +1,4 @@
-    <?php
+<?php
 
     require_once __DIR__ . '/BaseService.php';
     require_once __DIR__ . '/../dao/AuthDao.php';
@@ -92,4 +92,4 @@
             return ['success' => true, 'data' => array_merge($user, ['token' => $token])];
         }
     }
-    ?>
+    

@@ -69,4 +69,3 @@ class GuestDao extends BaseDao {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
-?>

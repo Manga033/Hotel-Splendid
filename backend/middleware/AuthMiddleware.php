@@ -10,16 +10,13 @@ class AuthMiddleware {
             throw new Exception("Missing authentication token");
         }
 
-        // Remove Bearer prefix if present (just in case)
         $token = preg_replace('/^Bearer\s+/i', '', trim($token));
         
         try {
             $decoded_token = JWT::decode($token, new Key(Config::JWT_SECRET(), 'HS256'));
             
-            // Cast the user object to array
             $user = (array) $decoded_token->user;
             
-            // Store user and token in Flight registry
             Flight::set('user', (object)$user);
             Flight::set('jwt_token', $token);
             

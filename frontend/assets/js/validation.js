@@ -1,4 +1,3 @@
-// Define all validation functions globally
 window.validateName = function() {
   const input = document.getElementById('first_name');
   const error = document.getElementById('name-error');
@@ -78,7 +77,7 @@ window.validateUsername = function() {
 };
 
 window.validateDOB = function() {
-  const input = document.getElementById('date_of_birth');
+  const input = document.getElementById('dob');
   const error = document.getElementById('date-error');
   if (!input || !error) return true;
   

@@ -25,5 +25,3 @@ class AuthDao extends BaseDao {
     return $this->connection->lastInsertId();
 }
 }
-
-?>

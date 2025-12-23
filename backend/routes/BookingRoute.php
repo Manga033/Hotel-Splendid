@@ -7,6 +7,7 @@ use OpenApi\Annotations as OA;
  *    path="/booking",
  *    tags={"bookings"},
  *    summary="Get all bookings or orded by creation date",
+ *    security={{"ApiKey": {}}},
  *    @OA\Parameter(
  *       name="order",
  *       in="query",
@@ -24,14 +25,20 @@ use OpenApi\Annotations as OA;
  */
 
 Flight::route('GET /booking', function() {
-
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    
+    $user = Flight::get('user');
     $order = Flight::request()->query['order'] ?? null;
 
-    if($order === 'created_at') {
-        Flight::json(Flight::bookingService()->listBookingsByCreatedAt());
+    if ($user->role === 'admin') { 
+        if($order === 'created_at') {
+            Flight::json(Flight::bookingService()->listBookingsByCreatedAt());
+        } else {
+            Flight::json(Flight::bookingService()->getAll());
+        }
     } else {
-        Flight::json(Flight::bookingService()->getAll());
+        $myBookings = Flight::bookingService()->getBookingsByGuestId($user->id);
+        Flight::json($myBookings);
     }
 });
 
@@ -40,6 +47,7 @@ Flight::route('GET /booking', function() {
  *     path="/booking/{id}",
  *     tags={"bookings"},
  *     summary="Get a single booking by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -65,6 +73,7 @@ Flight::route('GET /booking/@id', function($id){
  *     path="/booking",
  *     tags={"bookings"},
  *     summary="Create a new booking",
+ *     security={{"ApiKey": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -138,6 +147,7 @@ Flight::route('PUT /booking/@id', function($id){
  *     path="/booking/{id}",
  *     tags={"bookings"},
  *     summary="Partially update a booking",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -177,6 +187,7 @@ Flight::route('PATCH /booking/@id', function($id){
  *     path="/booking/{id}",
  *     tags={"bookings"},
  *     summary="Delete a booking",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

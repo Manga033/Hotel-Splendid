@@ -1,4 +1,3 @@
-// toastr configuration
 toastr.options = {
   "closeButton": true,
   "debug": false,
@@ -16,7 +15,6 @@ toastr.options = {
   "hideMethod": "fadeOut"
 };
 
-// Define validation functions globally
 window.validateUsername = function() {
   const usernameInput = document.getElementById('exampleInputUsername');
   const usernameError = document.getElementById('username-error');

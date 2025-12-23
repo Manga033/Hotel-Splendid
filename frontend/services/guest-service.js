@@ -1,6 +1,7 @@
 let GuestService = {
     getAllGuests: function(callback) {
         RestClient.get("guest", function(data) {
+            console.log('Fetched guests:', data);
             const guests = Array.isArray(data) ? data : (data.data || []);
             if (callback) callback(guests);
         }, function (jqXHR, status, error) {
@@ -21,6 +22,7 @@ let GuestService = {
     },
 
     createGuest: function(guest, callback) {
+        console.log('Creating guest:', guest);
         RestClient.post('guest', guest, function(response) {
             toastr.success("Guest created successfully");
             if (callback) callback(response);

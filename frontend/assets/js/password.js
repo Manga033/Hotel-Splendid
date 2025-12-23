@@ -1,4 +1,3 @@
-// Only run if we're on the registration page
 var passReg = document.getElementById("password_reg");
 var msgReg = document.getElementById("message-pass");
 var strenghtReg = document.getElementById("strenght");

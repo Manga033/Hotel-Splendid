@@ -28,4 +28,3 @@ class ReviewService extends BaseService {
         return $this->dao->listByRating();
     }
 }
-?>

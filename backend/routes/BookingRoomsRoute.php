@@ -7,6 +7,7 @@ use OpenApi\Annotations as OA;
  *   path="/booking-rooms",
  *   tags={"booking-rooms"},
  *   summary="Get all booking rooms or order them by nightly rate",
+ *   security={{"ApiKey": {}}},
  *   @OA\Parameter(
  *    name="order",
  *    in="query",
@@ -41,6 +42,7 @@ Flight::route('GET /booking-rooms', function(){
  *     path="/booking-rooms/{id}",
  *     tags={"booking-rooms"},
  *     summary="Get a single booking room by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -66,6 +68,7 @@ Flight::route('GET /booking-rooms/@id', function($id){
  *     path="/booking-rooms",
  *     tags={"booking-rooms"},
  *     summary="Add a room to a booking",
+ *     security={{"ApiKey": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -129,6 +132,7 @@ Flight::route('PUT /booking-rooms/@id', function($id){
  *     path="/booking-rooms/{id}",
  *     tags={"booking-rooms"},
  *     summary="Partially update a booking room by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -163,6 +167,7 @@ Flight::route('PATCH /booking-rooms/@id', function($id){
  *     path="/booking-rooms/{id}",
  *     tags={"booking-rooms"},
  *     summary="Delete a booking room by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

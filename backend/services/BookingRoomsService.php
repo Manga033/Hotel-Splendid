@@ -28,4 +28,3 @@ class BookingRoomsService extends BaseService {
         return $this->dao->listByNightlyRate();
     }
 }
-?>

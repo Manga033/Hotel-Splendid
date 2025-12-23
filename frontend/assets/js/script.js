@@ -9,6 +9,10 @@ app.run();
 
 $(window).on('hashchange', () => {
   setTimeout(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }), 0);
+  const hash = location.hash;
+  if(hash === "#dashboard") {
+    DashboardService.init();
+  }
 });
 
 function setActiveNavFromHash() {

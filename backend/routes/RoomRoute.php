@@ -7,6 +7,7 @@ use OpenApi\Annotations as OA;
  *   path="/room",
  *   tags={"rooms"},
  *   summary="Get all rooms or get rooms by status",
+ *   security={{"ApiKey": {}}},
  *  @OA\Parameter(  
  *    name="status",
  *    in="query",
@@ -26,11 +27,19 @@ Flight::route('GET /room', function(){
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
     $status = Flight::request()->query['status'] ?? null;
 
+    try {
     if($status) {
-        Flight::json(Flight::roomService()->getByStatus($status));
+        $rooms = Flight::roomService()->getByStatus($status);
     } else {
-        Flight::json(Flight::roomService()->getAll());
+        $rooms = Flight::roomService()->getAll();
     }
+
+        Flight::json($rooms);
+    } catch (Exception $e) {
+        error_log("RoomRoute ERROR: " . $e->getMessage());
+        Flight::json(['error' => $e->getMessage()], 500);
+    }
+
 });
 
 /**
@@ -38,6 +47,7 @@ Flight::route('GET /room', function(){
  *     path="/room/{id}",
  *     tags={"rooms"},
  *     summary="Get a single room by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -63,6 +73,7 @@ Flight::route('GET /room/@id', function($id){
  *     path="/room",
  *     tags={"rooms"},
  *     summary="Create a new room",
+ *     security={{"ApiKey": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -132,6 +143,7 @@ Flight::route('PUT /room/@id', function($id){
  *     path="/room/{id}",
  *     tags={"rooms"},
  *     summary="Partially update a room by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -169,6 +181,7 @@ Flight::route('PATCH /room/@id', function($id){
  *     path="/room/{id}",
  *     tags={"rooms"},
  *     summary="Delete a room by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
