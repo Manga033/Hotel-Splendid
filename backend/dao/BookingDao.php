@@ -16,9 +16,9 @@ class BookingDao extends BaseDao
             'check_out_date'  => $booking['check_out_date'],
             'num_of_guests'   => $booking['num_of_guests'] ?? 1,
             'num_of_children' => $booking['num_of_children'] ?? 0,
-            'type'            => $booking['type'] ?? 'standard',
-            'total_price'     => $booking['total_price'] ?? 0.00,
-            'status'         => $booking['status'] ?? 'pending'
+            'type'            => $booking['type'] ?? 'standard'
+            // 'total_price'     => $booking['total_price'] ?? 0.00,
+            // 'status'         => $booking['status'] ?? 'pending'
         ];
         return $this->insert($data);
     }
@@ -61,5 +61,10 @@ class BookingDao extends BaseDao
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getBookingsByGuestId($guest_id) {
+    $stmt = $this->connection->prepare("SELECT * FROM " . $this->table . " WHERE guest_id = :guest_id");
+    $stmt->execute(['guest_id' => $guest_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-?>
+}

@@ -17,13 +17,24 @@ var UserService = {
         $("#registrationForm").validate({
             submitHandler: function (form) {
                 var entity = Object.fromEntries(new FormData(form).entries());
-                
+                console.log('Registration form data:', entity);
                 var userData = {
+                    // first_name: entity.first_name,
+                    // last_name: entity.last_name,
+                    // dob: entity.date_of_birth,
+                    // gender: entity.gender,
+                    email: entity.email,
                     username: entity.username_reg,
-                    password: entity.password_reg
+                    password: entity.password_reg, 
+                    // tel_num: entity.tel_number, 
+                    // country: entity.country,
+                    // city: entity.city,
+                    // address: entity.address
                 };
                 
+                console.log('User data for registration:', userData);
                 UserService.register(userData);
+                
             },
         });
     },
@@ -39,8 +50,8 @@ var UserService = {
                 console.log(result);
                 localStorage.setItem("user_token", result.data.token);
                 toastr.success("Login successful!");
-                window.location.replace("#home");
                 UserService.generateMenuItems();
+                window.location.replace("#home");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 toastr.error(XMLHttpRequest?.responseText ? XMLHttpRequest.responseText : 'Invalid username or password');
@@ -69,6 +80,7 @@ var UserService = {
     logout: function () {
         localStorage.clear();
         toastr.info("Logged out successfully");
+        UserService.generateMenuItems();
         window.location.replace("#login");
     },
 

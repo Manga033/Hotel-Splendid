@@ -15,9 +15,11 @@ class BaseDao {
 
 
    public function getAll() {
+       
        $stmt = $this->connection->prepare("SELECT * FROM " . $this->table);
        $stmt->execute();
-       return $stmt->fetchAll(PDO::FETCH_ASSOC);
+       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       return $result;
    }
 
 
@@ -25,17 +27,22 @@ class BaseDao {
        $stmt = $this->connection->prepare("SELECT * FROM " . $this->table . " WHERE id = :id");
        $stmt->bindParam(':id', $id);
        $stmt->execute();
-       return $stmt->fetch();
+       return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
 
-   public function insert($data) {
-       $columns = implode(", ", array_keys($data));
-       $placeholders = ":" . implode(", :", array_keys($data));
-       $sql = "INSERT INTO " . $this->table . " ($columns) VALUES ($placeholders)";
-       $stmt = $this->connection->prepare($sql);
-       return $stmt->execute($data);
-   }
+    public function insert($data) {
+    unset($data['referer']);
+    
+    $columns = implode(", ", array_keys($data));
+    $placeholders = ":" . implode(", :", array_keys($data));
+    
+    
+    $sql = "INSERT INTO " . $this->table . " ($columns) VALUES ($placeholders)";
+    $stmt = $this->connection->prepare($sql);
+    
+    return $stmt->execute($data);
+}   
 
 
    public function update($id, $data) {
@@ -57,4 +64,3 @@ class BaseDao {
        return $stmt->execute();
    }
 }
-?>

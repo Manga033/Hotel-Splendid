@@ -1,4 +1,3 @@
-// Only run if we're on the rooms page
 const standardRoomSelector = document.querySelector('#standard-room');
 const executiveRoomSelector = document.querySelector('#executive-room');
 const kingRoomSelector = document.querySelector('#king-room');

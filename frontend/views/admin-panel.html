@@ -65,6 +65,7 @@
   <div class="modal-dialog" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 500px; border-radius: 8px; max-height: 80vh; overflow-y: auto;">
     <form id="createGuestForm">
       <h4 style="margin-bottom: 1rem;">Add New Guest</h4>
+      
       <div style="margin-bottom: 1rem;">
         <label>First Name:</label>
         <input type="text" class="form-control" name="first_name" required>
@@ -73,10 +74,30 @@
         <label>Last Name:</label>
         <input type="text" class="form-control" name="last_name" required>
       </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label>Date of birth:</label>
+        <input type="date" class="form-control" name="dob" required>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Gender:</label>
+        <select class="form-control" name="gender" required>
+            <option value="" disabled selected>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="prefer_not_to_say">Prefer not to say</option>
+        </select>
+      </div>
+
       <div style="margin-bottom: 1rem;">
         <label>Email:</label>
         <input type="email" class="form-control" name="email" required>
       </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Phone:</label>
+        <input type="tel" class="form-control" name="tel_num">
+      </div>
+
       <div style="margin-bottom: 1rem;">
         <label>Username:</label>
         <input type="text" class="form-control" name="username" required>
@@ -85,12 +106,24 @@
         <label>Password:</label>
         <input type="password" class="form-control" name="password" required>
       </div>
+
       <div style="margin-bottom: 1rem;">
-        <label>Phone:</label>
-        <input type="tel" class="form-control" name="tel_num">
+        <label>Country:</label>
+        <input type="text" class="form-control" name="country">
       </div>
-      <button type="button" class="btn btn-ghost" onclick="AdminService.closeModal('createGuestModal')">Close</button>
-      <button type="submit" class="btn btn-fill">Create</button>
+      <div style="margin-bottom: 1rem;">
+        <label>City:</label>
+        <input type="text" class="form-control" name="city">
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label>Address:</label>
+        <input type="text" class="form-control" name="address">
+      </div>
+
+      <div style="margin-top: 20px; text-align: right;">
+        <button type="button" class="btn btn-ghost" onclick="AdminService.closeModal('createGuestModal')">Close</button>
+        <button type="submit" class="btn btn-fill">Create</button>
+      </div>
     </form>
   </div>
 </div>
@@ -132,7 +165,6 @@
 </div>
 
 <script type="text/javascript">
-// Wait for jQuery to be available
 (function initAdminPanel() {
   if (typeof $ === 'undefined' || typeof jQuery === 'undefined') {
     setTimeout(initAdminPanel, 100);
@@ -150,9 +182,12 @@
       
       this.loadGuests();
       
+
       $("#createGuestForm").validate({
         submitHandler: function(form) {
           const data = Object.fromEntries(new FormData(form).entries());
+          console.log('Form data for new guest:', data);
+          console.log('forma', form);
           GuestService.createGuest(data, function() {
             AdminService.closeModal('createGuestModal');
             AdminService.loadGuests();
@@ -183,7 +218,6 @@
     
     loadGuests: function() {
       GuestService.getAllGuests(function(data) {
-        // Ensure data is an array
         const guests = Array.isArray(data) ? data : [];
         const tbody = $('#guests-tbody');
         tbody.empty();

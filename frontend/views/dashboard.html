@@ -1,5 +1,5 @@
 <div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
-  <h2 class="page-header">My Dashboard</h2>
+  <h2 class="page-header">Dashboard</h2>
   <hr/>
   
   <div style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem;">
@@ -79,6 +79,23 @@
   </div>
 </div>
 
+<div id="viewBookingModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); overflow-y: auto;">
+  <div style="background:#fff; margin:5% auto; padding:0; width:40%; border-radius:10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    
+    <div style="background: #241e09; color: #d4af37; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="margin: 0; font-size: 20px;">Booking Confirmation</h3>
+      <span onclick="$('#viewBookingModal').hide()" style="cursor: pointer; font-size: 24px; font-weight: bold;">&times;</span>
+    </div>
+
+    <div id="bookingDetailsContent" style="padding: 25px; color: #333; line-height: 1.6;">
+        </div>
+
+    <div style="padding: 15px 20px; background: #f9f9f9; text-align: right; border-top: 1px solid #eee;">
+      <button class="btn btn-fill" onclick="$('#viewBookingModal').hide()">Close Window</button>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 let DashboardService = {
   init: function() {
@@ -91,6 +108,7 @@ let DashboardService = {
     
     $('#user-name').text(user.username);
     $('#guest_id').val(user.id);
+    $('#my-bookings-table tbody').html('<tr><td colspan="5">Loading...</td></tr>');
     
     this.loadMyBookings();
     
@@ -104,8 +122,9 @@ let DashboardService = {
   
   loadMyBookings: function() {
     const user = Utils.getUserFromToken();
-    
+    console.log("Fetching bookings for user ID:", user.id);
     BookingService.getAllBookings(function(data) {
+      $('#my-bookings-table tbody').empty();
       const myBookings = data.filter(b => b.guest_id == user.id);
       const tbody = $('#bookings-tbody');
       tbody.empty();
@@ -150,11 +169,39 @@ let DashboardService = {
     });
   },
   
-  viewBooking: function(id) {
-    BookingService.getBookingById(id, function(data) {
-      toastr.info(`Booking #${data.id}: ${data.check_in_date} to ${data.check_out_date}`);
-    });
-  },
+viewBooking: function(id) {
+  BookingService.getBookingById(id, function(data) {
+    // Determine color based on status
+    const statusColor = data.status === 'confirmed' ? '#28a745' : (data.status === 'pending' ? '#ffc107' : '#dc3545');
+    
+    let html = `
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div>
+          <p><strong>Booking Reference:</strong><br> <span style="color: #d4af37; font-weight: bold;">#${data.id}</span></p>
+          <p><strong>Check-In Date:</strong><br> ${data.check_in_date}</p>
+          <p><strong>Check-Out Date:</strong><br> ${data.check_out_date}</p>
+        </div>
+        <div>
+          <p><strong>Current Status:</strong><br> 
+            <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; text-transform: uppercase;">
+              ${data.status}
+            </span>
+          </p>
+          <p><strong>Room Type:</strong><br> ${data.type.charAt(0).toUpperCase() + data.type.slice(1)}</p>
+          <p><strong>Guests:</strong><br> ${data.num_of_guests} Adults, ${data.num_of_children} Children</p>
+        </div>
+      </div>
+      <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+      <div style="text-align: right;">
+        <h4 style="margin: 0;">Total Amount Paid:</h4>
+        <h2 style="margin: 0; color: #241e09;">$${data.total_price}</h2>
+      </div>
+    `;
+
+    $('#bookingDetailsContent').html(html);
+    $('#viewBookingModal').fadeIn(200);
+  });
+},
   
   cancelBooking: function(id) {
     if (confirm('Are you sure you want to cancel this booking?')) {

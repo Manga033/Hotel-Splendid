@@ -7,6 +7,7 @@ use OpenApi\Annotations as OA;
  *   path="/review",
  *   tags={"reviews"},
  *   summary="Get all reviews or order them by rating",
+ *   security={{"ApiKey": {}}},
  *   @OA\Parameter(
  *     name="order",
  *     in="query",
@@ -40,6 +41,7 @@ Flight::route('GET /review', function() {
  *     path="/review/{id}",
  *     tags={"reviews"},
  *     summary="Get a single review by ID",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -65,6 +67,7 @@ Flight::route('GET /review/@id', function($id){
  *   path="/review",
  *   tags={"reviews"},
  *   summary="Create a new review",
+ *   security={{"ApiKey": {}}},
  *  @OA\RequestBody(
  *    required=true,
  *    @OA\JsonContent(
@@ -130,6 +133,7 @@ Flight::route('PUT /review/@id', function($id){
  *     path="/review/{id}",
  *     tags={"reviews"},
  *     summary="Partially update a review",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -164,6 +168,7 @@ Flight::route('PATCH /review/@id', function($id){
  *     path="/review/{id}",
  *     tags={"reviews"},
  *     summary="Delete a review.",
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
