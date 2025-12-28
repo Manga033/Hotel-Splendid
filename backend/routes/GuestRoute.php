@@ -85,15 +85,39 @@ Flight::route('GET /guest/@id', function($id){
  *     @OA\Response(
  *         response=200,
  *         description="Guest successfully registered"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Validation failed"
  *     )
  * )
  */
-
 Flight::route('POST /guest', function() {
-    
     Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
-    Flight::json(Flight::guestService()->registerGuest($data));
+    
+    try {
+        $result = Flight::guestService()->registerGuest($data);
+        Flight::json([
+            'success' => true,
+            'message' => 'Guest registered successfully',
+            'data' => $result
+        ], 200);
+    } catch (Exception $e) {
+        $errorData = json_decode($e->getMessage(), true);
+        if (is_array($errorData) && isset($errorData['validation_failed'])) {
+            Flight::json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $errorData['errors']
+            ], 400);
+        } else {
+            Flight::json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 });
 
 

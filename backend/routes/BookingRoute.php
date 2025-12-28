@@ -83,23 +83,45 @@ Flight::route('GET /booking/@id', function($id){
  *             @OA\Property(property="check_out_date", type="string", format="date", example="2025-05-05"),
  *             @OA\Property(property="num_of_guests", type="integer", example=2),
  *             @OA\Property(property="num_of_children", type="integer", example=1),
- *             @OA\Property(property="type", type="string", example="standard"),
- *             @OA\Property(property="total_price", type="number", format="float", example=350.00),
- *             @OA\Property(property="status", type="string", example="pending")
+ *             @OA\Property(property="type", type="string", example="standard")
  *         )
  *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Booking created"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Validation failed"
  *     )
  * )
  */
-
 Flight::route('POST /booking', function(){
-
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
     $data = Flight::request()->data->getData();
-    Flight::json(Flight::bookingService()->createBooking($data));
+    
+    try {
+        $result = Flight::bookingService()->createBooking($data);
+        Flight::json([
+            'success' => true,
+            'message' => 'Booking created successfully',
+            'data' => $result
+        ], 200);
+    } catch (Exception $e) {
+        $errorData = json_decode($e->getMessage(), true);
+        if (is_array($errorData) && isset($errorData['validation_failed'])) {
+            Flight::json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $errorData['errors']
+            ], 400);
+        } else {
+            Flight::json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 });
 
 /**

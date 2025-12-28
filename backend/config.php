@@ -6,26 +6,26 @@ error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED));
 
 class Config {
     public static function DB_NAME() {
-        return 'hotel_splendid_db';
+        return getenv('MYSQLDATABASE') ?: 'hotel_splendid_db';
     }
 
     public static function DB_PORT() {
-        return '3306';
+        return getenv('MYSQLPORT') ?: '3306';
     }
 
     public static function DB_USER() {
-        return 'root';
+        return getenv('MYSQLUSER') ?: 'root';
     }
 
     public static function DB_PASSWORD() {
-        return '';
+        return getenv('MYSQLPASSWORD') ?: '';
     }
 
     public static function DB_HOST() {
-        return '127.0.0.1';
+        return getenv('MYSQLHOST') ?: '127.0.0.1';
     }
 
     public static function JWT_SECRET() {
-        return 'MY_SIMPLE_SECRET';
+        return getenv('JWT_SECRET') ?: 'MY_SIMPLE_SECRET';
     }
-}   
+}

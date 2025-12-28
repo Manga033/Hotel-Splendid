@@ -81,15 +81,39 @@ Flight::route('GET /review/@id', function($id){
  *  @OA\Response(
  *   response=200,
  *   description="Review created successfully"
+ *  ),
+ *  @OA\Response(
+ *   response=400,
+ *   description="Validation failed"
  *  )
  * )
  */
-
 Flight::route('POST /review', function(){
-
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
     $data = Flight::request()->data->getData();
-    Flight::json(Flight::reviewService()->createReview($data));
+    
+    try {
+        $result = Flight::reviewService()->createReview($data);
+        Flight::json([
+            'success' => true,
+            'message' => 'Review created successfully',
+            'data' => $result
+        ], 200);
+    } catch (Exception $e) {
+        $errorData = json_decode($e->getMessage(), true);
+        if (is_array($errorData) && isset($errorData['validation_failed'])) {
+            Flight::json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $errorData['errors']
+            ], 400);
+        } else {
+            Flight::json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 });
 
 /**
