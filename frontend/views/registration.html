@@ -1,32 +1,29 @@
 <section class="register-wrapper">
-  <form class="register-section" id="registrationForm" onsubmit="return validateForm()" novalidate>
+  <form class="register-section" id="registrationForm" novalidate>
     <h4 class="text-center">Registration</h4>
 
-    <div class="mb-3_reg">
-  
+    <div class="mb-3">
       <label for="email" class="form-label">Email:</label>
-      <input type="email" id="email" name="email" class="form-control" validateEmail()>
-      <span id="email-error">Email is required</span> <br>
+      <input type="email" id="email" name="email" class="form-control" required>
+      <span id="email-error" class="error"></span>
+    </div>
 
+    <div class="mb-3">
       <label for="username_reg" class="form-label">Username:</label>
-      <input type="text" name="username_reg" id="username_reg" class="form-control" validateUsername() required>
-      <span id="username-error">Username is required</span> <br>
+      <input type="text" name="username_reg" id="username_reg" class="form-control" required>
+      <span id="username-error" class="error"></span>
+    </div>
 
+    <div class="mb-3">
       <label for="password_reg" class="form-label">Password:</label>
       <input type="password" name="password_reg" id="password_reg" class="form-control" required>
-      <p id="message-pass" style="display:none">Password is <span id="strenght"></span></p>
-
+      <span id="password-error" class="error"></span>
     </div>
 
     <button type="submit" class="btn btn-danger_reg mt-1 w-100">Register</button>
-    <span id="submit-error" style="display:none">Please fill out the form.</span>
     
     <p class="text-center mt-3">
       Already have an account? <a href="#login">Login here!</a>
     </p>
   </form>
 </section>
-
-<script type="text/javascript">
-  UserService.initRegister();
-</script>

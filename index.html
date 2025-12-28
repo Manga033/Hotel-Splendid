@@ -133,33 +133,27 @@
 		</div>
 	</footer>
 
-	<script defer async>
-		(() => {
-			const loader = document.getElementById('loader');
-			const scrollBar = document.getElementsByClassName('scroll-bar')[0];
-			window.addEventListener('load', () => {
-				loader.classList.add('none');
-				scrollBar.classList.remove('scroll-bar')
-			});
-		})();
-	</script>
-
 	<script src="frontend/assets/js/jquery.min.js"></script>
 	<script src="frontend/assets/js/jquery.spapp.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 	<script src="frontend/utils/constants.js"></script>
 	<script src="frontend/utils/rest-client.js"></script>
 	<script src="frontend/utils/utils.js"></script>
 
+	<script src="frontend/services/app-service.js"></script>
 	<script src="frontend/services/user-service.js"></script>
 	<script src="frontend/services/guest-service.js"></script>
 	<script src="frontend/services/booking-service.js"></script>
 	<script src="frontend/services/room-service.js"></script>
 	<script src="frontend/services/review-service.js"></script>
+	<script src="frontend/services/admin-service.js"></script>
+	<script src="frontend/services/dashboard-service.js"></script>
 
+	<script src="frontend/assets/js/loader.js"></script>
 	<script src="frontend/assets/js/loginval.js"></script>
 	<script src="frontend/assets/js/validation.js"></script>
 	<script src="frontend/assets/js/password.js"></script>
@@ -167,30 +161,5 @@
 	<script src="frontend/assets/js/script.js"></script>
 	<script src="frontend/assets/js/toggleHamburger.js"></script>
 	<script src="frontend/assets/js/switchRooms.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			UserService.generateMenuItems();
-
-			$(window).on('hashchange', function() {
-				const hash = location.hash;
-				const user = Utils.getUserFromToken();
-
-				if ((hash === '#dashboard' || hash === '#admin-panel') && !user) {
-					toastr.warning('Please login to access this page');
-					window.location.replace('#login');
-					return;
-				}
-
-				if (hash === '#admin-panel' && user && user.role !== Constants.ADMIN_ROLE) {
-					toastr.error('Access denied. Admins only.');
-					window.location.replace('#home');
-					return;
-				}
-
-				UserService.generateMenuItems();
-			});
-		});
-	</script>
 </body>
 </html>

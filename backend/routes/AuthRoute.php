@@ -3,9 +3,6 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenApi\Annotations as OA;
 
-// IMPORTANT: AuthService must be registered in index.php like:
-// Flight::register('auth_service', 'AuthService');
-
 Flight::group('/auth', function() {
 
     /**
@@ -22,11 +19,13 @@ Flight::group('/auth', function() {
      *             @OA\Schema(
      *                 required={"username","password"},
      *                 @OA\Property(property="username", type="string", example="demo", description="Username"),
-     *                 @OA\Property(property="password", type="string", example="some_password", description="User password")
+     *                 @OA\Property(property="password", type="string", example="some_password", description="User password"),
+     *                 @OA\Property(property="email", type="string", example="demo@example.com", description="Email")
      *             )
      *         )
      *     ),
      *     @OA\Response(response=200, description="User has been added."),
+     *     @OA\Response(response=400, description="Validation failed."),
      *     @OA\Response(response=500, description="Internal server error.")
      * )
      */
@@ -39,9 +38,17 @@ Flight::group('/auth', function() {
             Flight::json([
                 'message' => 'User registered successfully',
                 'data' => $response['data']
-            ]);
+            ], 200);
         } else {
-            Flight::halt(500, $response['error']);
+            if (isset($response['errors'])) {
+                Flight::json([
+                    'success' => false,
+                    'message' => $response['error'],
+                    'errors' => $response['errors']
+                ], 400);
+            } else {
+                Flight::halt(500, $response['error']);
+            }
         }
     });
 
@@ -51,6 +58,7 @@ Flight::group('/auth', function() {
      *      tags={"auth"},
      *      summary="Login to system using username and password",
      *      @OA\Response(response=200, description="User data and JWT"),
+     *      @OA\Response(response=400, description="Validation failed."),
      *      @OA\RequestBody(
      *          description="Login credentials",
      *          required=true,
@@ -71,11 +79,21 @@ Flight::group('/auth', function() {
             Flight::json([
                 'message' => 'User logged in successfully',
                 'data' => $response['data']
-            ]);
+            ], 200);
         } else {
-            Flight::halt(500, $response['error']);
+            if (isset($response['errors'])) {
+                Flight::json([
+                    'success' => false,
+                    'message' => $response['error'],
+                    'errors' => $response['errors']
+                ], 400);
+            } else {
+                Flight::json([
+                    'success' => false,
+                    'message' => $response['error']
+                ], 401);
+            }
         }
     });
 
 });
-?>

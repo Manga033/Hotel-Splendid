@@ -4,14 +4,14 @@
 
     <div class="mb-3 mt-3">
       <label for="exampleInputUsername" class="form-label">Username</label>
-      <input type="text" class="form-control" id="exampleInputUsername" name="username" onkeyup="validateUsername()" required>
-      <span id="username-error"></span>
+      <input type="text" class="form-control" id="exampleInputUsername" name="username" required>
+      <span id="username-error" class="error"></span>
     </div>
 
     <div class="mb-3">
       <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" name="password" onkeyup="validatePassword()" required>
-      <span id="password-error"></span>
+      <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+      <span id="password-error" class="error"></span>
     </div>
 
     <button type="submit">Login</button>
@@ -21,7 +21,3 @@
     </p>
   </form>
 </section>
-
-<script type="text/javascript">
-  UserService.init();
-</script>

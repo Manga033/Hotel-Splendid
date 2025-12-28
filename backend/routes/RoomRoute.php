@@ -78,7 +78,7 @@ Flight::route('GET /room/@id', function($id){
  *         required=true,
  *         @OA\JsonContent(
  *             required={"room_number"},
- *             @OA\Property(property="room_number", type="integer", example=101),
+ *             @OA\Property(property="room_number", type="string", example="101"),
  *             @OA\Property(property="floor", type="integer", example=1),
  *             @OA\Property(property="type", type="string", example="single"),
  *             @OA\Property(property="base_price", type="number", format="float", example=99.99),
@@ -89,15 +89,39 @@ Flight::route('GET /room/@id', function($id){
  *     @OA\Response(
  *         response=200,
  *         description="Room created successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Validation failed"
  *     )
  * )
  */
-
 Flight::route('POST /room', function(){
-
     Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
-    Flight::json(Flight::roomService()->createRoom($data));
+    
+    try {
+        $result = Flight::roomService()->createRoom($data);
+        Flight::json([
+            'success' => true,
+            'message' => 'Room created successfully',
+            'data' => $result
+        ], 200);
+    } catch (Exception $e) {
+        $errorData = json_decode($e->getMessage(), true);
+        if (is_array($errorData) && isset($errorData['validation_failed'])) {
+            Flight::json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $errorData['errors']
+            ], 400);
+        } else {
+            Flight::json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 });
 
 /**

@@ -11,9 +11,12 @@ let BookingService = {
     },
 
     getBookingById: function(id, callback) {
+        $.blockUI({ message: '<h3>Loading booking details...</h3>' });
         RestClient.get('booking/' + id, function (data) {
+            $.unblockUI();
             if (callback) callback(data);
         }, function (jqXHR, status, error) {
+            $.unblockUI();
             console.error('Error fetching booking');
             const msg = jqXHR?.responseJSON?.message || jqXHR?.responseJSON?.error || 'Failed to load booking details';
             toastr.error(msg);
@@ -21,20 +24,26 @@ let BookingService = {
     },
 
     createBooking: function(booking, callback) {
+        $.blockUI({ message: '<h3>Creating booking...</h3>' });
         RestClient.post('booking', booking, function(response) {
+            $.unblockUI();
             toastr.success("Booking created successfully");
             if (callback) callback(response);
         }, function(jqXHR, status, error) {
+            $.unblockUI();
             const msg = jqXHR?.responseJSON?.message || jqXHR?.responseJSON?.error || 'Failed to create booking';
             toastr.error(msg);
         });
     },
 
     updateBooking: function(id, booking, callback) {
+        $.blockUI({ message: '<h3>Updating booking...</h3>' });
         RestClient.put('booking/' + id, booking, function (data) {
+            $.unblockUI();
             toastr.success("Booking updated successfully");
             if (callback) callback(data);
         }, function (jqXHR, status, error) {
+            $.unblockUI();
             console.error('Error updating booking');
             const msg = jqXHR?.responseJSON?.message || jqXHR?.responseJSON?.error || 'Failed to update booking';
             toastr.error(msg);
@@ -42,10 +51,13 @@ let BookingService = {
     },
 
     patchBooking: function(id, booking, callback) {
+        $.blockUI({ message: '<h3>Updating booking...</h3>' });
         RestClient.patch('booking/' + id, booking, function (data) {
+            $.unblockUI();
             toastr.success("Booking updated successfully");
             if (callback) callback(data);
         }, function (jqXHR, status, error) {
+            $.unblockUI();
             console.error('Error updating booking');
             const msg = jqXHR?.responseJSON?.message || jqXHR?.responseJSON?.error || 'Failed to update booking';
             toastr.error(msg);
@@ -53,21 +65,14 @@ let BookingService = {
     },
 
     deleteBooking: function(id, callback) {
+        $.blockUI({ message: '<h3>Deleting booking...</h3>' });
         RestClient.delete('booking/' + id, null, function(response) {
+            $.unblockUI();
             toastr.success("Booking deleted successfully");
             if (callback) callback(response);
         }, function(jqXHR, status, error) {
+            $.unblockUI();
             const msg = jqXHR?.responseJSON?.message || jqXHR?.responseJSON?.error || 'Failed to delete booking';
-            toastr.error(msg);
-        });
-    },
-
-    listByCreatedAt: function(callback) {
-        RestClient.get('booking?order=created_at', function(data) {
-            if (callback) callback(data);
-        }, function (jqXHR, status, error) {
-            console.error('Error fetching bookings');
-            const msg = jqXHR?.responseJSON?.message || jqXHR?.responseJSON?.error || 'Failed to load bookings';
             toastr.error(msg);
         });
     }
