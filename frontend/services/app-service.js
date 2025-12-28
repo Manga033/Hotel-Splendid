@@ -1,45 +1,29 @@
-/**
- * AppService - Application-level controller
- * Handles routing, authentication guards, and menu initialization
- * MVC Pattern: Controller layer for application-wide concerns
- */
+
 let AppService = {
-    /**
-     * Initialize application
-     * Sets up event listeners and initial state
-     */
+
     init: function() {
-        // Generate initial menu based on authentication state
         UserService.generateMenuItems();
-        
-        // Set up route guards and navigation listeners
+
         this.setupRouteGuards();
     },
-    
-    /**
-     * Setup route guards for protected pages
-     * Ensures users are authenticated and authorized for specific routes
-     */
+
     setupRouteGuards: function() {
         $(window).on('hashchange', function() {
             const hash = location.hash;
             const user = Utils.getUserFromToken();
-            
-            // Guard: Protected routes require authentication
+
             if (AppService.isProtectedRoute(hash) && !user) {
                 toastr.warning('Please login to access this page');
                 window.location.replace('#login');
                 return;
             }
-            
-            // Guard: Admin panel requires admin role
+
             if (hash === '#admin-panel' && user && user.role !== Constants.ADMIN_ROLE) {
                 toastr.error('Access denied. Admins only.');
                 window.location.replace('#home');
                 return;
             }
-            
-            // Update menu items based on current user state
+
             UserService.generateMenuItems();
         });
     },
@@ -90,7 +74,6 @@ let AppService = {
     }
 };
 
-// Initialize application when DOM is ready
 $(document).ready(function() {
     AppService.init();
 });

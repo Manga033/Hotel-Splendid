@@ -133,17 +133,6 @@
 		</div>
 	</footer>
 
-	<script defer async>
-		(() => {
-			const loader = document.getElementById('loader');
-			const scrollBar = document.getElementsByClassName('scroll-bar')[0];
-			window.addEventListener('load', () => {
-				loader.classList.add('none');
-				scrollBar.classList.remove('scroll-bar')
-			});
-		})();
-	</script>
-
 	<script src="frontend/assets/js/jquery.min.js"></script>
 	<script src="frontend/assets/js/jquery.spapp.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -164,6 +153,7 @@
 	<script src="frontend/services/admin-service.js"></script>
 	<script src="frontend/services/dashboard-service.js"></script>
 
+	<script src="frontend/assets/js/loader.js"></script>
 	<script src="frontend/assets/js/loginval.js"></script>
 	<script src="frontend/assets/js/validation.js"></script>
 	<script src="frontend/assets/js/password.js"></script>
