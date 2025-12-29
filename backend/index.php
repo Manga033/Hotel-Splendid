@@ -62,6 +62,8 @@ Flight::register('auth_middleware', 'AuthMiddleware');
 
 Flight::set('flight.base_url', '/');
 
+require_once __DIR__ . '/data/roles.php';
+
 require_once __DIR__ . '/routes/AuthRoute.php';
 require_once __DIR__ . '/routes/BookingRoute.php';
 require_once __DIR__ . '/routes/GuestRoute.php';
