@@ -1,4 +1,6 @@
 <?php
+error_log("✅ AuthRoute.php loaded");
+
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenApi\Annotations as OA;

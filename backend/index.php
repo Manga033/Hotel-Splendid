@@ -68,5 +68,8 @@ require_once __DIR__ . '/routes/GuestRoute.php';
 require_once __DIR__ . '/routes/ReviewRoute.php';
 require_once __DIR__ . '/routes/RoomRoute.php';
 
+Flight::route('GET /ping', function () {
+  Flight::json(['ok' => true, 'time' => date('c')]);
+});
 Flight::start();
 ?>
