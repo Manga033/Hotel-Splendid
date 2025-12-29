@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --from=deps /app/vendor /app/vendor
 COPY . /app
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t . index.php"]
+CMD ["sh", "-c", "php -S [::]:${PORT:-8080} index.php"]
