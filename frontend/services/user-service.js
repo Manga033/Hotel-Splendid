@@ -6,7 +6,7 @@ var UserService = {
             window.location.replace("#home");
         }
 
-        // LOGIN FORM VALIDATION - NO MINIMUM LENGTH REQUIREMENTS
+        // LOGIN FORM VALIDATION
         $("#loginForm").validate({
             rules: {
                 username: {
@@ -36,7 +36,7 @@ var UserService = {
     },
 
     initRegister: function() {
-        // REGISTRATION FORM VALIDATION - WITH MINIMUM LENGTH REQUIREMENTS
+        // REGISTRATION FORM VALIDATION
         $("#registrationForm").validate({
             rules: {
                 email: {
@@ -94,9 +94,19 @@ var UserService = {
             dataType: "json",
             success: function (result) {
                 $.unblockUI();
+                console.log("Login response:", result);
                 
-                // Handle different response structures
-                const token = result.token || result.data?.token || result.data;
+                // Handle the response - token can be in multiple places
+                let token = null;
+                
+                if (result.token) {
+                    token = result.token;
+                } else if (result.data && result.data.token) {
+                    token = result.data.token;
+                } else if (typeof result === 'string') {
+                    // Sometimes the token is returned as a plain string
+                    token = result;
+                }
                 
                 if (token) {
                     localStorage.setItem("user_token", token);
@@ -111,16 +121,28 @@ var UserService = {
                         window.location.replace("#home");
                     }
                 } else {
+                    console.error("No token in response:", result);
                     toastr.error("Invalid response from server");
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $.unblockUI();
-                console.error("Login error:", XMLHttpRequest.responseJSON);
+                console.error("Login error details:", {
+                    status: XMLHttpRequest.status,
+                    statusText: XMLHttpRequest.statusText,
+                    responseText: XMLHttpRequest.responseText,
+                    responseJSON: XMLHttpRequest.responseJSON
+                });
                 
-                const msg = XMLHttpRequest?.responseJSON?.message 
-                    || XMLHttpRequest?.responseJSON?.error 
-                    || 'Invalid username or password';
+                let msg = 'Login failed. Please try again.';
+                
+                if (XMLHttpRequest.responseJSON) {
+                    msg = XMLHttpRequest.responseJSON.message 
+                        || XMLHttpRequest.responseJSON.error 
+                        || msg;
+                } else if (XMLHttpRequest.responseText) {
+                    msg = XMLHttpRequest.responseText;
+                }
                 
                 toastr.error(msg);
             }
@@ -136,17 +158,37 @@ var UserService = {
             dataType: "json",
             success: function (result) {
                 $.unblockUI();
+                console.log("Registration response:", result);
                 toastr.success("Registration successful! Please login.");
                 $("#registrationForm")[0].reset();
                 window.location.replace("#login");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $.unblockUI();
-                console.error("Registration error:", XMLHttpRequest.responseJSON);
+                console.error("Registration error details:", {
+                    status: XMLHttpRequest.status,
+                    statusText: XMLHttpRequest.statusText,
+                    responseText: XMLHttpRequest.responseText,
+                    responseJSON: XMLHttpRequest.responseJSON
+                });
                 
-                const msg = XMLHttpRequest?.responseJSON?.message 
-                    || XMLHttpRequest?.responseJSON?.error 
-                    || 'Registration failed. Please try again.';
+                let msg = 'Registration failed. Please try again.';
+                
+                if (XMLHttpRequest.responseJSON) {
+                    msg = XMLHttpRequest.responseJSON.message 
+                        || XMLHttpRequest.responseJSON.error 
+                        || msg;
+                    
+                    // If there are validation errors, show them
+                    if (XMLHttpRequest.responseJSON.errors) {
+                        const errors = XMLHttpRequest.responseJSON.errors;
+                        for (let field in errors) {
+                            msg += '<br>' + errors[field];
+                        }
+                    }
+                } else if (XMLHttpRequest.responseText) {
+                    msg = XMLHttpRequest.responseText;
+                }
                 
                 toastr.error(msg);
             }

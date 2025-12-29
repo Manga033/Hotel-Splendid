@@ -31,9 +31,25 @@ Flight::route('POST /auth/register', function () {
     $data = Flight::request()->data->getData();
     try {
         $response = Flight::authService()->register($data);
-        Flight::json($response);
+        
+        if (isset($response['success']) && $response['success']) {
+            Flight::json([
+                'message' => 'User registered successfully',
+                'data' => $response['data']
+            ], 200);
+        } else {
+            Flight::json([
+                'success' => false,
+                'message' => $response['error'] ?? 'Registration failed',
+                'errors' => $response['errors'] ?? null
+            ], 400);
+        }
     } catch (Exception $e) {
-        Flight::json(['message' => $e->getMessage()], 500);
+        Flight::json([
+            'success' => false,
+            'message' => 'Server error',
+            'error' => $e->getMessage()
+        ], 500);
     }
 });
 
@@ -58,19 +74,31 @@ Flight::route('POST /auth/register', function () {
  */
 Flight::route('POST /auth/login', function() {
     $data = Flight::request()->data->getData();
-    $response = Flight::authService()->login($data);
+    
+    try {
+        $response = Flight::authService()->login($data);
 
-    if (isset($response['success']) && $response['success']) {
-        Flight::json([
-            'message' => 'User logged in successfully',
-            'data' => $response['data'] ?? $response
-        ], 200);
-    } else {
+        if (isset($response['success']) && $response['success']) {
+            // Return token directly in response
+            Flight::json([
+                'success' => true,
+                'message' => 'Login successful',
+                'token' => $response['data']['token'],
+                'data' => $response['data']
+            ], 200);
+        } else {
+            Flight::json([
+                'success' => false,
+                'message' => $response['error'] ?? 'Login failed',
+                'errors' => $response['errors'] ?? null
+            ], 400);
+        }
+    } catch (Exception $e) {
         Flight::json([
             'success' => false,
-            'message' => $response['error'] ?? 'Login failed',
-            'errors' => $response['errors'] ?? null
-        ], 400);
+            'message' => 'Server error',
+            'error' => $e->getMessage()
+        ], 500);
     }
 });
 ?>
